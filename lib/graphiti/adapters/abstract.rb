@@ -400,6 +400,13 @@ module Graphiti
         raise "you must override #destroy in an adapter subclass"
       end
 
+      def apply_includes_on_scope(scope, sideloads)
+      end
+
+      def clear_active_connections!
+        raise "you must override #clear_active_connections! in an adapter subclass"
+      end
+
       def self.numerical_operators
         [:eq, :not_eq, :gt, :gte, :lt, :lte].freeze
       end

@@ -17,6 +17,7 @@ module Graphiti
       if @query.zero_results?
         []
       else
+        @resource.adapter.apply_includes_on_scope(@object, sideload_name_arr)
         resolved = broadcast_data { |payload|
           @object = @resource.before_resolve(@object, @query)
           payload[:results] = @resource.resolve(@object)
@@ -45,8 +46,8 @@ module Graphiti
         resolve_sideload = -> {
           Graphiti.context = graphiti_context
           sideload.resolve(results, q, parent_resource)
-          if concurrent && defined?(ActiveRecord)
-            ActiveRecord::Base.clear_active_connections!
+          if concurrent
+            @resource.adapter.clear_active_connections!
           end
         }
         if concurrent
@@ -69,6 +70,14 @@ module Graphiti
     end
 
     private
+
+    def sideload_name_arr
+      all_sideloads.map(&:to_sym)
+    end
+
+    def all_sideloads
+      @query.sideloads.keys
+    end
 
     def broadcast_data
       opts = {
