@@ -297,13 +297,8 @@ module Graphiti
         model_instance
       end
 
-      def clear_active_connections!
+      def close!
         ActiveRecord::Base.clear_active_connections!
-      end
-
-      def set_foreign_key!(attrs, key_name, parent_obj)
-        value = parent_obj&.send(x[:primary_key])
-        attrs[x[:foreign_key]] = value
       end
 
       private
