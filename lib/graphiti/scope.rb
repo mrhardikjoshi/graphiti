@@ -45,9 +45,7 @@ module Graphiti
         resolve_sideload = -> {
           Graphiti.context = graphiti_context
           sideload.resolve(results, q, parent_resource)
-          if concurrent
-            @resource.adapter.close!
-          end
+          @resource.adapter.close! if concurrent
         }
         if concurrent
           promises << Concurrent::Promise.execute(&resolve_sideload)
