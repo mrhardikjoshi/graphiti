@@ -6,7 +6,7 @@ module Graphiti
       end
 
       def links?
-        @proxy.query.pagination_links?
+        @proxy.data.present? && @proxy.query.pagination_links?
       end
 
       def links
