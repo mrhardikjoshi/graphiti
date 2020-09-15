@@ -6,6 +6,9 @@ module Graphiti
       require "graphiti/adapters/active_record/belongs_to_sideload"
       require "graphiti/adapters/active_record/has_one_sideload"
       require "graphiti/adapters/active_record/many_to_many_sideload"
+      require "graphiti/adapters/active_record/persistence.rb"
+
+      include Graphiti::Adapters::ActiveRecord::Persistence
 
       def self.sideloading_classes
         {
@@ -295,6 +298,10 @@ module Graphiti
       def destroy(model_instance)
         model_instance.destroy
         model_instance
+      end
+
+      def close
+        ActiveRecord::Base.clear_active_connections!
       end
 
       private

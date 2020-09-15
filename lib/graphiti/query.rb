@@ -32,6 +32,8 @@ module Graphiti
     end
 
     def pagination_links?
+      return false if zero_results?
+
       if Graphiti.config.pagination_links_on_demand
         [true, "true"].include?(@params[:pagination_links])
       else

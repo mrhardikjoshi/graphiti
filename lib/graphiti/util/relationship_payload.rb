@@ -44,7 +44,7 @@ module Graphiti
       end
 
       def payload_for(sideload, relationship_payload)
-        type = relationship_payload[:meta][:jsonapi_type].to_sym
+        type = relationship_payload[:meta][:jsonapi_type]&.to_sym
 
         # For polymorphic *sideloads*, grab the correct child sideload
         if sideload.resource.type != type && sideload.type == :polymorphic_belongs_to

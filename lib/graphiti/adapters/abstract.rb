@@ -400,6 +400,19 @@ module Graphiti
         raise "you must override #destroy in an adapter subclass"
       end
 
+      def close
+      end
+
+      def persistence_attributes(persistance, attributes)
+        attributes
+      end
+
+      def process_belongs_to(persistence, attributes)
+      end
+
+      def process_has_many(persistence, caller_model)
+      end
+
       def self.numerical_operators
         [:eq, :not_eq, :gt, :gte, :lt, :lte].freeze
       end
