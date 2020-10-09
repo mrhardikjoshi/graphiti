@@ -93,7 +93,7 @@ module Graphiti
       original = Graphiti.context[:namespace]
       begin
         Graphiti.context[:namespace] = action
-        ::Graphiti::RequestValidator.new(@resource, @payload.params).validate!
+        ::Graphiti::RequestValidator.new(@resource, @payload.params, action).validate!
         validator = persist {
           @resource.persist_with_relationships \
             @payload.meta(action: action),
@@ -118,6 +118,7 @@ module Graphiti
     end
 
     def destroy
+      data
       transaction_response = @resource.transaction do
         metadata = {method: :destroy}
         model = @resource.destroy(@query.filters[:id], metadata)
@@ -135,6 +136,7 @@ module Graphiti
     end
 
     def update_attributes
+      data
       save(action: :update)
     end
 

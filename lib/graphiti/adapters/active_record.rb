@@ -1,7 +1,7 @@
 module Graphiti
   module Adapters
     class ActiveRecord < ::Graphiti::Adapters::Abstract
-      require "graphiti/adapters/active_record/inferrence"
+      require "graphiti/adapters/active_record/inference"
       require "graphiti/adapters/active_record/has_many_sideload"
       require "graphiti/adapters/active_record/belongs_to_sideload"
       require "graphiti/adapters/active_record/has_one_sideload"
@@ -295,6 +295,10 @@ module Graphiti
       def destroy(model_instance)
         model_instance.destroy
         model_instance
+      end
+
+      def close
+        ActiveRecord::Base.clear_active_connections!
       end
 
       private

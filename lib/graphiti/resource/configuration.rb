@@ -129,7 +129,7 @@ module Graphiti
         def get_attr(name, flag, opts = {})
           defaults = {request: false}
           opts = defaults.merge(opts)
-          new.get_attr(name, flag, opts)
+          new.get_attr(name, flag, **opts)
         end
 
         def abstract_class?
@@ -149,14 +149,14 @@ module Graphiti
 
         def infer_type
           if name.present?
-            name.demodulize.gsub("Resource", "").underscore.pluralize.to_sym
+            name.demodulize.sub(/.*\KResource/, "").underscore.pluralize.to_sym
           else
             :undefined_jsonapi_type
           end
         end
 
         def infer_model
-          name&.gsub("Resource", "")&.safe_constantize
+          name&.sub(/.*\KResource/, "")&.safe_constantize
         end
 
         # @api private
@@ -247,7 +247,7 @@ module Graphiti
 
       def get_attr!(name, flag, options = {})
         options[:raise_error] = true
-        get_attr(name, flag, options)
+        get_attr(name, flag, **options)
       end
 
       def get_attr(name, flag, request: false, raise_error: false)
